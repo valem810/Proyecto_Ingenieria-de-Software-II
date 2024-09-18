@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Archivo</title>
+</head>
+<body>
+    <h1>Cargar archivo de tarjetas</h1>
+    <form id="file-form" action="{% url 'cargar_archivo' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cargar archivo</button>
+
+        {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+    </form>
+
+    <h2>Instrucciones para el formato del archivo</h2>
+    <p>El archivo <strong>.in</strong> debe estar en el siguiente formato:</p>
+    <ul>
+        <li>La primera línea debe contener el número total de tarjetas.</li>
+        <li>A partir de la segunda línea, cada línea debe contener un número entero que representa el valor de una tarjeta.</li>
+        <li>Ejemplo de formato válido:</li>
+    </ul>
+    <pre>
+    5
+    10
+    20
+    15
+    25
+    30
+    </pre>
+    <p>Donde <strong>5</strong> es el número total de tarjetas, seguido por los valores de cada tarjeta en líneas separadas.</p>
+</body>
+</html>

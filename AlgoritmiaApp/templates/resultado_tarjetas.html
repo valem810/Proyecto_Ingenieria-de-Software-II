@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado Tarjetas</title>
+    <style>
+        .tarjeta {
+            display: inline-block;
+            margin: 10px;
+            padding: 20px;
+            width: 100px;
+            text-align: center;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+        }
+        .conservada {
+            background-color: green;
+        }
+        .eliminada {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultado de las Tarjetas</h1>
+    <div id="tarjetas-container">
+        {% for tarjeta in tarjetas %}
+            <div class="tarjeta {% if tarjeta.estado == 'conservada' %}conservada{% else %}eliminada{% endif %}">
+                {{ tarjeta.valor }}
+            </div>
+        {% endfor %}
+    </div>
+    <br>
+    <a href="{% url 'cargar_archivo' %}">Cargar otro archivo</a>
+</body>
+</html>
