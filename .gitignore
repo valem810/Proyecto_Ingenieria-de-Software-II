@@ -1,3 +1,4 @@
+#Para que no estemos eliminando archivos al ajecutar
 # Ignorar archivos .pyc
 *.pyc
 
