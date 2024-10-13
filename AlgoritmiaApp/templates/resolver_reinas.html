@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caballos</title>
+    <title>Reinas</title>
     <script>
         function validarTamaño() {
             var n = parseInt(document.getElementById('id_n').value);
-            if (n > 5) {
+            if (n > 8) {
                 var confirmacion = confirm("El tamaño del tablero es grande. La resolución puede tardar mucho tiempo. ¿Estás seguro de que deseas continuar?");
                 if (!confirmacion) {
                     return false;
@@ -18,7 +18,7 @@
     </script>
 </head>
 <body>
-    <h1>Resolver problema de caballos</h1>
+    <h1>Resolver problema de las reinas</h1>
     <form method="post" novalidate onsubmit="return validarTamaño()">
         {% csrf_token %}
         {{ form.as_p }}

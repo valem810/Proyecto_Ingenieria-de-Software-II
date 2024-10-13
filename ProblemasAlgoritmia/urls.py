@@ -24,7 +24,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('resolver_tablero/', views.resolver_tablero, name='resolver_tablero'),
+    path('resolver_reinas/', views.resolver_reinas, name='resolver_reinas'),
     path('generar_pdf/<int:n>/', views.generar_pdf, name='generar_pdf'),
+    path('resolver_reinas/', views.resolver_reinas, name='resolver_reinas'),
+    path('generar_pdf_reinas/', views.generar_pdf_reinas, name='generar_pdf_reinas'),
     path('cargar_archivo/', views.cargar_archivo_view, name='cargar_archivo'),
+    path('descargar_pdf/', views.descargar_pdf_view, name='descargar_pdf'),
     path('descargar/', views.descargar_archivo_view, name='descargar_archivo'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

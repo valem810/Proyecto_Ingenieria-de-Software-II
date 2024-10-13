@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultado Tarjetas</title>
+    <title>Resultado de las Tarjetas</title>
     <style>
         .tarjeta {
-            display: inline-block;
             margin: 10px;
             padding: 20px;
             width: 100px;
@@ -25,15 +23,6 @@
 </head>
 <body>
     <h1>Resultado de las Tarjetas</h1>
-
-    <form id="download-form" action="{% url 'descargar_pdf' %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="tarjetas" id="tarjetas-input" value="">
-        <button type="submit">Descargar PDF</button>
-    </form>
-
-    <a href="{% url 'cargar_archivo' %}">Cargar otro archivo</a>
-
     <div id="tarjetas-container">
         {% for tarjeta in tarjetas %}
             <div class="tarjeta {% if tarjeta.estado == 'conservada' %}conservada{% else %}eliminada{% endif %}">
@@ -41,13 +30,5 @@
             </div>
         {% endfor %}
     </div>
-    <br>
-
-    <script>
-        const tarjetas = {{ tarjetas|safe }};
-        const tarjetasJson = JSON.stringify(tarjetas);
-        document.getElementById('tarjetas-input').value = tarjetasJson;
-    </script>
-    
 </body>
 </html>

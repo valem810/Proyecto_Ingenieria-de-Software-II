@@ -54,20 +54,19 @@ def img_to_base64(img_path):
         return base64.b64encode(img_file.read()).decode('utf-8')
 
 def mostrar_tableros(tablero, archivo):
-    archivo.write('<div style="margin-bottom: 20px;">\n')  # Contenedor con margen inferior
-    archivo.write('<table border="1" cellpadding="10" cellspacing="0">\n')  # Tabla para el tablero
+    knight_image_base64 = img_to_base64('media/images/chess-knight-svgrepo-com.png')
+    archivo.write("<table style='border-collapse: collapse;'>\n")
     for fila in tablero:
         archivo.write("<tr>\n")
-        for celda in fila:
-            if celda == 1:
-                archivo.write('<td style="width: 40px; height: 40px; text-align: center;">')
-                archivo.write('<img src="/media/images/chess-knight-svgrepo-com.svg" alt="Knight" style="width: 30px; height: 30px;" />')
-                archivo.write("</td>\n")
+        for cell in fila:
+            if cell == 1:
+                archivo.write(f"<td style='width:50px;height:50px;border:1px solid black; text-align:center; vertical-align:middle;'>"
+                              f"<img src='data:image/png;base64,{knight_image_base64}' width='40' height='40' style='display:block;margin:auto;' /></td>\n")
             else:
-                archivo.write('<td style="width: 40px; height: 40px; text-align: center;">&nbsp;</td>\n')  # Celda vacía
+                archivo.write("<td style='width:50px;height:50px;border:1px solid black;'></td>\n")
         archivo.write("</tr>\n")
     archivo.write("</table>\n")
-    archivo.write("</div>\n")
+
 
 
 
