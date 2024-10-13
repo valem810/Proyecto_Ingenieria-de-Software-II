@@ -1,9 +1,13 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Problemas de Algoritmia</title>
+    <!-- Cargar icono desde la carpeta estática -->
+    <img src="{% static 'images/icon.svg' %}" alt="Icono de la página" class="page-icon">
 </head>
 <body>
     <h1>Problemas de Algoritmia</h1>
@@ -27,7 +31,7 @@
             <a href="{% url 'resolver_reinas' %}">
                 <button>Problema de las Reinas</button>
             </a>
-
+        </div>
     </div>
 </body>
 </html>
