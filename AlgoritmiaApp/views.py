@@ -8,6 +8,8 @@ from .forms import TableroForm, ArchivoForm
 from .problema_caballos import ProblemaCaballos, mostrar_tableros
 from .problema_reinas import ProblemaReinas, mostrar_tableros_reinas
 import json
+from datetime import datetime
+
 
 def index(request):
     return render(request, 'index.html')
@@ -124,19 +126,36 @@ def descargar_archivo_view(request):
             return response
     return redirect('cargar_archivo')
 
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
+
 def generar_pdf_tarjetas(tarjetas):
     template_path = 'resultado_pdf.html'
-    context = {'tarjetas': tarjetas}
+    
+    # Añadimos más datos al contexto, como la fecha de generación
+    context = {
+        'tarjetas': tarjetas,
+        'fecha_generacion': datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Fecha y hora actual
+    }
+    
+    # Convertir la plantilla HTML a cadena
     html = render_to_string(template_path, context)
 
+    # Crear respuesta HTTP con el tipo de contenido PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="tarjetas.pdf"'
     
+    # Crear el PDF
     pisa_status = pisa.CreatePDF(html, dest=response)
 
+    # Si hay errores, devolver mensaje de error
     if pisa_status.err:
-        return HttpResponse('Error al generar el PDF')
+        return HttpResponse('Error al generar el PDF: {}'.format(pisa_status.err))
+    
+    # Retornar el archivo PDF si todo salió bien
     return response
+
 
 def descargar_pdf_view(request):
     if request.method == 'POST':
@@ -208,3 +227,4 @@ def generar_pdf_reinas(html_file_path):
     if pisa_status.err:
         return HttpResponse('Hubo un error al generar el PDF', status=500)
     return response
+

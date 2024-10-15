@@ -54,18 +54,25 @@ def img_to_base64(img_path):
         return base64.b64encode(img_file.read()).decode('utf-8')
 
 def mostrar_tableros(tablero, archivo):
-    knight_image_base64 = img_to_base64('media/images/chess-knight-svgrepo-com.png')
-    archivo.write("<table style='border-collapse: collapse;'>\n")
+    knight_image_base64 = img_to_base64('media/images/chess-knight-svgrepo-com-white.png')
+    
+    # Abrir tabla con bordes de color blanco
+    archivo.write("<table style='border-collapse: collapse; background: black; border-color:white;'>\n")
+    
     for fila in tablero:
         archivo.write("<tr>\n")
         for cell in fila:
             if cell == 1:
-                archivo.write(f"<td style='width:50px;height:50px;border:1px solid black; text-align:center; vertical-align:middle;'>"
-                              f"<img src='data:image/png;base64,{knight_image_base64}' width='40' height='40' style='display:block;margin:auto;' /></td>\n")
+                # Cambiamos el borde de las celdas a blanco y aplicamos el filtro para cambiar la imagen a blanco
+                archivo.write(f"<td style='width:50px;height:50px;border:1px solid white; text-align:center; vertical-align:middle;'>"
+                              f"<img src='data:image/png;base64,{knight_image_base64}' width='40' height='40' style='display:block;margin:auto; filter: invert(100%);' /></td>\n")
             else:
-                archivo.write("<td style='width:50px;height:50px;border:1px solid black;'></td>\n")
+                # Celdas vacías con borde blanco
+                archivo.write("<td style='width:50px;height:50px;border:1px solid white;'></td>\n")
         archivo.write("</tr>\n")
+    
     archivo.write("</table>\n")
+
 
 
 

@@ -46,20 +46,45 @@ class ProblemaReinas:
 
         return True
 
+# Función para convertir imágenes a base64
 def img_to_base64(img_path):
     with open(img_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode('utf-8')
 
+# Función para generar el tablero de ajedrez con las reinas
 def mostrar_tableros_reinas(tablero, archivo):
-    queen_image_base64 = img_to_base64('media/images/chess-queen-svgrepo-com.png')
+    # Convertir imágenes de reinas a base64
+    queen_black_base64 = img_to_base64('media/images/chess-queen-svgrepo-com-black.png')
+    queen_white_base64 = img_to_base64('media/images/chess-queen-svgrepo-com-white.png')
+
     archivo.write("<table style='border-collapse: collapse;'>\n")
-    for fila in tablero:
+    
+    # Recorremos las filas del tablero
+    for i, fila in enumerate(tablero):
         archivo.write("<tr>\n")
-        for celda in fila:
-            if celda == "Q":
-                archivo.write(f"<td style='width:50px;height:50px;border:1px solid black; text-align:center; vertical-align:middle;'>"
-                              f"<img src='data:image/png;base64,{queen_image_base64}' width='40' height='40' style='display:block;margin:auto;' /></td>\n")
+        
+        # Recorremos las celdas de cada fila
+        for j, celda in enumerate(fila):
+            # Determinar el color del cuadro (blanco o negro) alternando según la posición
+            is_white_square = (i + j) % 2 == 0  # Alternar color: si la suma del índice es par, es blanco
+
+            if is_white_square:
+                # Cuadro blanco: fondo blanco con borde negro
+                archivo.write(f"<td style='width:50px;height:50px;background-color:white;border:1px solid black; text-align:center; vertical-align:middle;'>")
+                
+                # Si hay una reina en esta celda, colocar la reina negra
+                if celda == "Q":
+                    archivo.write(f"<img src='data:image/png;base64,{queen_black_base64}' width='40' height='40' style='display:block;margin:auto;' />")
             else:
-                archivo.write("<td style='width:50px;height:50px;border:1px solid black;'></td>\n")
-        archivo.write("</tr>\n")
-    archivo.write("</table>\n")
+                # Cuadro negro: fondo negro con borde negro
+                archivo.write(f"<td style='width:50px;height:50px;background-color:black;border:1px solid black; text-align:center; vertical-align:middle;'>")
+                
+                # Si hay una reina en esta celda, colocar la reina blanca
+                if celda == "Q":
+                    archivo.write(f"<img src='data:image/png;base64,{queen_white_base64}' width='40' height='40' style='display:block;margin:auto;' />")
+            
+            archivo.write("</td>\n")  # Cerrar celda
+        
+        archivo.write("</tr>\n")  # Cerrar fila
+    
+    archivo.write("</table>\n")  # Cerrar tabla
