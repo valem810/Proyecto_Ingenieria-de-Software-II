@@ -1,4 +1,6 @@
 import base64
+import os
+from django.conf import settings
 
 class ProblemaCaballos:
     def __init__(self, n):
@@ -49,23 +51,64 @@ class ProblemaCaballos:
                         return False
         return True
 
-def img_to_base64(img_path):
-    with open(img_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode('utf-8')
+def img_to_base64(img_name):
+    img_path = os.path.join(settings.MEDIA_ROOT, 'images', img_name)
+    print(f"Ruta del archivo: {img_path}")
+    try:
+        with open(img_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode('utf-8')
+    except FileNotFoundError:
+        print(f"Error: El archivo {img_path} no fue encontrado.")
+        return None
 
-def mostrar_tableros(tablero, archivo):
-    knight_image_base64 = img_to_base64('media/images/chess-knight-svgrepo-com.png')
-    archivo.write("<table style='border-collapse: collapse;'>\n")
-    for fila in tablero:
-        archivo.write("<tr>\n")
-        for cell in fila:
-            if cell == 1:
-                archivo.write(f"<td style='width:50px;height:50px;border:1px solid black; text-align:center; vertical-align:middle;'>"
-                              f"<img src='data:image/png;base64,{knight_image_base64}' width='40' height='40' style='display:block;margin:auto;' /></td>\n")
-            else:
-                archivo.write("<td style='width:50px;height:50px;border:1px solid black;'></td>\n")
-        archivo.write("</tr>\n")
-    archivo.write("</table>\n")
+def mostrar_tableros(tablero, archivo, estilo):
+    if estilo == "normal":
+        knight_image_base64 = img_to_base64('chess-knight-svgrepo-com-black.png')
+        archivo.write("<table style='border-collapse: collapse;'>\n")
+        for fila in tablero:
+            archivo.write("<tr>\n")
+            for cell in fila:
+                if cell == 1:
+                    archivo.write(f"<td style='width:50px;height:50px;border:1px solid black; text-align:center; vertical-align:middle;'>"
+                                  f"<img src='data:image/png;base64,{knight_image_base64}' width='40' height='40' style='display:block;margin:auto;' /></td>\n")
+                else:
+                    archivo.write("<td style='width:50px;height:50px;border:1px solid black;'></td>\n")
+            archivo.write("</tr>\n")
+        archivo.write("</table>\n")
+
+    elif estilo == "inverso":
+        knight_image_base64 = img_to_base64('chess-knight-svgrepo-com-white.png')
+        archivo.write("<table style='border-collapse: collapse; background: black; border-color:white;'>\n")
+        for fila in tablero:
+            archivo.write("<tr>\n")
+            for cell in fila:
+                if cell == 1:
+                    archivo.write(f"<td style='width:50px;height:50px;border:1px solid white; text-align:center; vertical-align:middle;'>"
+                                  f"<img src='data:image/png;base64,{knight_image_base64}' width='40' height='40' style='display:block;margin:auto;' /></td>\n")
+                else:
+                    archivo.write("<td style='width:50px;height:50px;border:1px solid white;'></td>\n")
+            archivo.write("</tr>\n")
+        archivo.write("</table>\n")
+
+    elif estilo == "realista":
+        knight_black_base64 = img_to_base64('chess-knight-svgrepo-com-black.png')
+        knight_white_base64 = img_to_base64('chess-knight-svgrepo-com-white.png')
+        archivo.write("<table style='border-collapse: collapse;'>\n")
+        for i, fila in enumerate(tablero):
+            archivo.write("<tr>\n")
+            for j, celda in enumerate(fila):
+                is_white_square = (i + j) % 2 == 0
+                if is_white_square:
+                    archivo.write(f"<td style='width:50px;height:50px;background-color:white;border:1px solid black; text-align:center; vertical-align:middle;'>")
+                    if celda == 1:
+                        archivo.write(f"<img src='data:image/png;base64,{knight_black_base64}' width='40' height='40' style='display:block;margin:auto;' />")
+                else:
+                    archivo.write(f"<td style='width:50px;height:50px;background-color:black;border:1px solid black; text-align:center; vertical-align:middle;'>")
+                    if celda == 1:
+                        archivo.write(f"<img src='data:image/png;base64,{knight_white_base64}' width='40' height='40' style='display:block;margin:auto;' />")
+                archivo.write("</td>\n")
+            archivo.write("</tr>\n")
+        archivo.write("</table>\n")
 
 
 

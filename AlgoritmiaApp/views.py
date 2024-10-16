@@ -8,6 +8,7 @@ from .forms import TableroForm, ArchivoForm
 from .problema_caballos import ProblemaCaballos, mostrar_tableros
 from .problema_reinas import ProblemaReinas, mostrar_tableros_reinas
 import json
+from datetime import datetime
 
 def index(request):
     return render(request, 'index.html')
@@ -17,16 +18,15 @@ def resolver_tablero(request):
         form = TableroForm(request.POST)
         if form.is_valid():
             n = form.cleaned_data['n']
+            estilo = request.POST.get('estilo', 'normal')
             problema = ProblemaCaballos(n)
             max_caballos, soluciones = problema.resolver()
 
             generated_dir = os.path.join('media', 'generated')
             os.makedirs(generated_dir, exist_ok=True)
 
-            if n <= 9:
-                file_name = os.path.join(generated_dir, f"CABAL_0{n}.html")
-            else:
-                file_name = os.path.join(generated_dir, f"CABAL_{n}.html")
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            file_name = os.path.join(generated_dir, f"CABAL_{n:02}_{timestamp}.html")
 
             with open(file_name, "w") as archivo:
                 archivo.write("<html><body>\n")
@@ -35,12 +35,11 @@ def resolver_tablero(request):
                 archivo.write(f"<p>Número de soluciones: {len(soluciones)}</p>\n")
 
                 for solution in soluciones:
-                    mostrar_tableros(solution, archivo)
+                    mostrar_tableros(solution, archivo, estilo)
                     archivo.write("<br><br>\n")
 
                 archivo.write("</body></html>\n")
 
-            # Renderizar el HTML en la vista
             context = {
                 'form': form,
                 'max_caballos': max_caballos,
@@ -126,16 +125,28 @@ def descargar_archivo_view(request):
 
 def generar_pdf_tarjetas(tarjetas):
     template_path = 'resultado_pdf.html'
-    context = {'tarjetas': tarjetas}
+    
+    # Añadimos más datos al contexto, como la fecha de generación
+    context = {
+        'tarjetas': tarjetas,
+        'fecha_generacion': datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Fecha y hora actual
+    }
+    
+    # Convertir la plantilla HTML a cadena
     html = render_to_string(template_path, context)
 
+    # Crear respuesta HTTP con el tipo de contenido PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="tarjetas.pdf"'
     
+    # Crear el PDF
     pisa_status = pisa.CreatePDF(html, dest=response)
 
+    # Si hay errores, devolver mensaje de error
     if pisa_status.err:
-        return HttpResponse('Error al generar el PDF')
+        return HttpResponse('Error al generar el PDF: {}'.format(pisa_status.err))
+    
+    # Retornar el archivo PDF si todo salió bien
     return response
 
 def descargar_pdf_view(request):
@@ -159,13 +170,15 @@ def resolver_reinas(request):
         form = TableroForm(request.POST)
         if form.is_valid():
             n = form.cleaned_data['n']
+            estilo = request.POST.get('estilo', 'normal')
             problema = ProblemaReinas(n)
             num_soluciones, soluciones = problema.resolver()
 
             generated_dir = os.path.join('media', 'generated')
             os.makedirs(generated_dir, exist_ok=True)
 
-            file_name = os.path.join(generated_dir, f"REINA_{n:02}.html")
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            file_name = os.path.join(generated_dir, f"REINA_{n:02}_{timestamp}.html")
 
             with open(file_name, "w") as archivo:
                 archivo.write("<html><body>\n")
@@ -173,7 +186,7 @@ def resolver_reinas(request):
                 archivo.write(f"<p>Número de soluciones: {num_soluciones}</p>\n")
 
                 for solution in soluciones:
-                    mostrar_tableros_reinas(solution, archivo)
+                    mostrar_tableros_reinas(solution, archivo, estilo)
                     archivo.write("<br><br>\n")
 
                 archivo.write("</body></html>\n")

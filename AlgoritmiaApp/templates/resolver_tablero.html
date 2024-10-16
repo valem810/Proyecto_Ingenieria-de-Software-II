@@ -22,6 +22,12 @@
     <form method="post" novalidate onsubmit="return validarTamaño()">
         {% csrf_token %}
         {{ form.as_p }}
+        <label for="estilo">Elige el estilo de visualización:</label>
+        <select id="estilo" name="estilo">
+            <option value="normal">Normal</option>
+            <option value="inverso">Inverso</option>
+            <option value="realista">Realista</option>
+        </select>
         <button type="submit" name="resolve">Resolver</button>
         <button type="submit" name="download_pdf">Descargar en PDF</button>
     </form>
