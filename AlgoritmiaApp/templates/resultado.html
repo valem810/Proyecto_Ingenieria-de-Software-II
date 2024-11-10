@@ -1,17 +1,41 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/resultado.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Resultados</title>
 </head>
 <body>
-    <h1>Resultados para tablero de tamaño {{ n }}x{{ n }}</h1>
-    <p>Número máximo de caballos colocados: {{ max_caballos }}</p>
-    <p>Número de soluciones: {{ soluciones|length }}</p>
 
-    <ul>
-        <li><a href="/{{ file_name }}" target="_blank">Ver soluciones</a></li>
-    </ul>
+    <header class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-logo">
+                Algorim
+            </a>
+            <nav class="navbar-links">
+                <a href="/"><i class='bx bx-home-alt'></i>Inicio</a>
+                {% if user.is_authenticated %}
+                    <a href="/logout"><i class='bx bx-log-out-circle'></i>Logout</a>
+                {% else %}
+                    <a href="/auth"><i class='bx bx-log-in-circle'></i>Login/SignUp</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Resultados para tablero de tamaño {{ n }}x{{ n }}</h1>
+        <p>Número máximo de caballos colocados: {{ max_caballos }}</p>
+        <p>Número de soluciones: {{ soluciones|length }}</p>
+
+        <ul>
+            <li><a href="/{{ file_name }}" target="_blank">Ver soluciones</a></li>
+        </ul>
+    </div>
 </body>
 </html>

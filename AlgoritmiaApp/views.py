@@ -9,10 +9,59 @@ from .problema_caballos import ProblemaCaballos, mostrar_tableros
 from .problema_reinas import ProblemaReinas, mostrar_tableros_reinas
 import json
 from datetime import datetime
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, 'index.html')
 
+def auth_view(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    return render(request, 'auth.html')
+
+def login_user(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Inicio de sesión exitoso.")
+            return redirect('index')  
+        else:
+            messages.error(request, "Nombre de usuario o contraseña incorrectos.")
+            return redirect('auth_view')
+
+def register_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        
+        if password != confirm_password:
+            messages.error(request, "Las contraseñas no coinciden.")
+            return redirect('auth_view')
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "El nombre de usuario ya está en uso.")
+            return redirect('auth_view')
+        
+        User.objects.create_user(username=username, password=password)
+        messages.success(request, "Usuario registrado exitosamente.")
+        return redirect('auth_view')
+    
+def logout_user(request):
+    logout(request)
+    return redirect('index')
+
+@login_required(login_url='auth_view')
 def resolver_tablero(request):
     if request.method == 'POST':
         form = TableroForm(request.POST)
@@ -77,6 +126,7 @@ def generar_pdf(html_file_path):
 from django.core.files.storage import FileSystemStorage
 from .tarjetas import cards_problem, leer_archivo, cargar_archivo
 
+@login_required(login_url='auth_view')
 def cargar_archivo_view(request):
     if request.method == 'POST':
         form = ArchivoForm(request.POST, request.FILES)
@@ -113,6 +163,7 @@ def cargar_archivo_view(request):
     
     return render(request, 'cargar_archivo.html', {'form': form})
 
+@login_required(login_url='auth_view')
 def descargar_archivo_view(request):
     file_name = request.GET.get('file')
     fs = FileSystemStorage()
@@ -149,6 +200,7 @@ def generar_pdf_tarjetas(tarjetas):
     # Retornar el archivo PDF si todo salió bien
     return response
 
+@login_required(login_url='auth_view')
 def descargar_pdf_view(request):
     if request.method == 'POST':
         tarjetas_json = request.POST.get('tarjetas')
@@ -165,6 +217,7 @@ def descargar_pdf_view(request):
 
 #Reinas
 
+@login_required(login_url='auth_view')
 def resolver_reinas(request):
     if request.method == 'POST':
         form = TableroForm(request.POST)

@@ -1,23 +1,45 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/tableros.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Caballos</title>
     <script>
         function validarTamaño() {
             var n = parseInt(document.getElementById('id_n').value);
-            if (n > 5) {
-                var confirmacion = confirm("El tamaño del tablero es grande. La resolución puede tardar mucho tiempo. ¿Estás seguro de que deseas continuar?");
-                if (!confirmacion) {
-                    return false;
-                }
+            
+            if (n > 4) {
+                alert("Error: El tamaño del tablero no puede ser mayor a 4.");
+                return false;
             }
+            
             return true;
         }
     </script>
 </head>
 <body>
+
+    <header class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-logo">
+                Algorim
+            </a>
+            <nav class="navbar-links">
+                <a href="/"><i class='bx bx-home-alt'></i>Inicio</a>
+                {% if user.is_authenticated %}
+                    <a href="/logout"><i class='bx bx-log-out-circle'></i>Logout</a>
+                {% else %}
+                    <a href="/auth"><i class='bx bx-log-in-circle'></i>Login/SignUp</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
     <h1>Resolver problema de caballos</h1>
     <form method="post" novalidate onsubmit="return validarTamaño()">
         {% csrf_token %}

@@ -5,30 +5,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <title>Problemas de Algoritmia</title>
 </head>
 <body>
-    <h1>Problemas de Algoritmia</h1>
-    
-    <div>
-        <h2>Selecciona un problema para resolver:</h2>
-        
-        <div>
-            <a href="{% url 'resolver_tablero' %}">
-                <button>Problema de los Caballos</button>
-            </a>
-        </div>
-        
-        <div>
-            <a href="{% url 'cargar_archivo' %}">
-                <button>Problema de las Tarjetas</button>
-            </a>
-        </div>
 
-        <div>
-            <a href="{% url 'resolver_reinas' %}">
-                <button>Problema de las Reinas</button>
+    <header class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-logo">
+                Algorim
             </a>
+            <nav class="navbar-links">
+                <a href="/"><i class='bx bx-home-alt'></i>Inicio</a>
+                {% if user.is_authenticated %}
+                    <a href="/logout"><i class='bx bx-log-out-circle'></i>Logout</a>
+                {% else %}
+                    <a href="/auth"><i class='bx bx-log-in-circle'></i>Login/SignUp</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="title">Problemas de algoritmia</h1>
+        <div class="menu-container">
+            <h2 class="subtitle">Selecciona el problema:</h2>
+            
+            <div class="button-grid">
+                <a href="{% url 'resolver_tablero' %}" class="menu-button knights">
+                    <div class="button-content">
+                        <i class="fas fa-chess-knight icon"></i>
+                        <span class="button-title">Problema de los caballos</span>
+                        <span class="button-description">Coloca la máxima cantidad de Caballos sin que se ataquen los unos a los otros</span>
+                    </div>
+                    <div class="button-glitch"></div>
+                </a>
+
+                <a href="{% url 'cargar_archivo' %}" class="menu-button cards">
+                    <div class="button-content">
+                        <i class="fas fa-cards icon"></i>
+                        <span class="button-title">Problema de las cartas</span>
+                        <span class="button-description">Encuentra la subsecuencia creciente más larga</span>
+                    </div>
+                    <div class="button-glitch"></div>
+                </a>
+
+                <a href="{% url 'resolver_reinas' %}" class="menu-button queens">
+                    <div class="button-content">
+                        <i class="fas fa-chess-queen icon"></i>
+                        <span class="button-title">Problema de las reinas</span>
+                        <span class="button-description">Coloca la máxima cantidad de Reinas sin que se ataquen las unas a las otras</span>
+                    </div>
+                    <div class="button-glitch"></div>
+                </a>
+            </div>
         </div>
     </div>
 </body>

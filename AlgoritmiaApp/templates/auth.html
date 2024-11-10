@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Auth</title>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-logo">
+                Algorim
+            </a>
+            <nav class="navbar-links">
+                <a href="/"><i class='bx bx-home-alt'></i>Inicio</a>
+                {% if user.is_authenticated %}
+                    <a href="/logout"><i class='bx bx-log-out-circle'></i>Logout</a>
+                {% else %}
+                    <a href="/auth"><i class='bx bx-log-in-circle'></i>Login/SignUp</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" data-tab="login">Login</button>
+            <button class="tab" data-tab="signup">Sign Up</button>
+        </div>
+
+        <form id="loginForm" class="form active" action="{% url 'login_user' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="username" id="loginUsername" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" id="loginPassword" placeholder="Password" required>
+            </div>
+            <button type="submit">Iniciar sesión</button>
+        </form>
+
+        <form id="signupForm" class="form" action="{% url 'register_user' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="username" id="signupUsername" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" id="signupPassword" placeholder="Password" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="confirm_password" id="confirmPassword" placeholder="Confirm Password" required>
+            </div>
+            <button type="submit">Registrarse</button>
+        </form>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <script src="{% static 'js/auth.js' %}"></script>
+</body>
+</html>

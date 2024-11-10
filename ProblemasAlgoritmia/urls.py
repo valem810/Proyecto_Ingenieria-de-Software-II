@@ -23,6 +23,10 @@ from AlgoritmiaApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('auth/', views.auth_view, name='auth_view'),
+    path('auth/login/', views.login_user, name='login_user'),
+    path('auth/register/', views.register_user, name='register_user'),
+    path('logout/', views.logout_user, name='logout_user'),
     path('resolver_tablero/', views.resolver_tablero, name='resolver_tablero'),
     path('resolver_reinas/', views.resolver_reinas, name='resolver_reinas'),
     path('generar_pdf/<int:n>/', views.generar_pdf, name='generar_pdf'),
