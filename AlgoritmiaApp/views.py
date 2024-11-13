@@ -33,7 +33,6 @@ def login_user(request):
         
         if user is not None:
             login(request, user)
-            messages.success(request, "Inicio de sesión exitoso.")
             return redirect('index')  
         else:
             messages.error(request, "Nombre de usuario o contraseña incorrectos.")

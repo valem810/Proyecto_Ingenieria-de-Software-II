@@ -5,16 +5,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/jinx_hq.svg' %}" >
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{% static 'css/tableros.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Caballos</title>
+
+    <style>
+        .swal2-progress-bar {
+            background-color: #b829ea;
+        }
+    </style>
+
     <script>
         function validarTamaño() {
             var n = parseInt(document.getElementById('id_n').value);
             
             if (n > 4) {
-                alert("Error: El tamaño del tablero no puede ser mayor a 4.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El tamaño del tablero no puede ser mayor a 4.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: '#1a1a24',
+                    color: '#ff2e88',
+                    customClass: {
+                    timerProgressBar: 'swal2-progress-bar'
+                }
+                });
                 return false;
             }
             

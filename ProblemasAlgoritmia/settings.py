@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,3 +130,26 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Admin Panel",
+    "site_header": "Algorim",
+    "site_brand": "Algorim",
+    "site_logo": "../static/images/jinx_hq.svg",
+    "login_logo": "../static/images/jinx_hq_banner.svg",
+    "site_icon": "../static/images/jinx_hq.svg",
+    "welcome_sign": "Bienvenido al panel de administración de Algorim",
+    "copyright": "Algorim",
+    "show_ui_builder": True,
+    "custom_css": "../static/css/custom_admin.css",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+    "navbar": "navbar-dark",
+    "accent": "accent-pink",
+    "sidebar": "sidebar-dark-pink",
+    "sidebar_fixed": True,
+    "actions_sticky_top": True
+}

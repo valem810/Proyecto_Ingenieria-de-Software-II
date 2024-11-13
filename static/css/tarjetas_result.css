@@ -20,6 +20,7 @@ body {
     align-items: center;
     flex-direction: column;
     position: relative;
+    margin-top: 2.5rem;
 }
 
 body::before {
@@ -29,7 +30,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background:
+    background: 
         linear-gradient(45deg, transparent 48%, var(--neon-purple) 50%, transparent 52%),
         linear-gradient(-45deg, transparent 48%, var(--neon-blue) 50%, transparent 52%);
     background-size: 60px 60px;
@@ -38,44 +39,70 @@ body::before {
     pointer-events: none;
 }
 
-@keyframes gridMove {
-    0% { background-position: 0 0; }
-    100% { background-position: 60px 60px; }
-}
-
 h1 {
-    font-size: 3rem;
-    text-align: center;
+    font-size: 2.5rem;
     color: var(--neon-cyan);
-    text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-blue);
+    text-align: center;
     margin-bottom: 2rem;
+    text-shadow: 0 0 10px var(--neon-cyan),
+                 0 0 20px var(--neon-cyan),
+                 0 0 30px var(--neon-blue);
+    animation: titleGlow 2s ease-in-out infinite;
 }
 
-form {
-    background: var(--glass);
-    backdrop-filter: blur(10px);
-    border: 2px solid var(--neon-blue);
-    border-radius: 10px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 0 20px var(--neon-blue), inset 0 0 20px var(--neon-pink);
-    animation: containerPulse 4s ease-in-out infinite;
-}
-
-@keyframes containerPulse {
-    0%, 100% { box-shadow: 0 0 20px var(--neon-blue), inset 0 0 20px var(--neon-pink); }
-    50% { box-shadow: 0 0 30px var(--neon-purple), inset 0 0 30px var(--neon-cyan); }
-}
-
-label {
-    font-size: 1.2rem;
-    color: white;
-    margin-bottom: 1rem;
+.result_link a {
+    font-size: 1.1rem;
+    color: var(--neon-pink);
+    text-decoration: none;
+    margin-top: 1rem;
+    text-align: center;
     display: block;
+    text-shadow: 0 0 5px var(--neon-pink);
+    transition: color 0.3s;
 }
 
-select, button {
+.result_link a:hover {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+#tarjetas-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 2rem;
+}
+
+.tarjeta {
+    display: inline-block;
+    margin: 10px;
+    padding: 20px;
+    width: 100px;
+    text-align: center;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.tarjeta.conservada {
+    background-color: green;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+.tarjeta.eliminada {
+    background-color: red;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+}
+
+.tarjeta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+
+button {
     width: 100%;
     padding: 1rem;
     background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
@@ -93,24 +120,6 @@ select, button {
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-select {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--neon-blue);
-    box-shadow: inset 0 0 10px rgba(0, 255, 249, 0.1);
-    margin-bottom: 1.5rem;
-}
-
-select:focus {
-    border-color: var(--neon-pink);
-    box-shadow: 0 0 15px var(--neon-pink), inset 0 0 10px rgba(255, 46, 136, 0.2);
-}
-
-button:hover {
-    background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
-    box-shadow: 0 0 20px var(--neon-purple);
-    transform: translateY(-2px);
-}
-
 button::before {
     content: '';
     position: absolute;
@@ -126,42 +135,48 @@ button:hover::before {
     left: 100%;
 }
 
-button[type="submit"]:first-of-type {
-    margin-bottom: 1rem;
+button:hover {
+    background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+    box-shadow: 0 0 20px var(--neon-purple);
+    transform: translateY(-2px);
 }
 
-button[type="submit"]:last-of-type {
-    background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink));
+form {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
 }
 
-button[type="submit"]:hover {
-    background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan));
+form button {
+    width: auto;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+    border: none;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    font-family: 'Orbitron', sans-serif;
 }
 
-button[type="submit"]:last-of-type:hover {
-    background: linear-gradient(45deg, var(--neon-blue), var(--neon-cyan));
+form button:hover {
+    background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+    box-shadow: 0 0 20px var(--neon-blue);
 }
 
-.error {
-    color: var(--neon-pink);
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    text-shadow: 0 0 5px var(--neon-pink);
-    animation: errorPulse 2s infinite;
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
 }
 
-.success{
-    color: var(--neon-cyan);
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    text-shadow: 0 0 5px var(--neon-blue);
-    animation: errorPulse 2s infinite;
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-blue); }
+    50% { text-shadow: 0 0 15px var(--neon-cyan), 0 0 25px var(--neon-blue), 0 0 35px var(--neon-purple); }
 }
 
-@keyframes errorPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
+
 
 /* Navbar */
 .navbar {

@@ -231,3 +231,14 @@
   .navbar-links a:hover {
     color: var(--neon-pink);
   }
+
+  @media (max-width: 768px) {
+    .navbar-links a {
+      font-size: 0;
+    }
+  
+    .navbar-links a i {
+      font-size: 1.8rem;
+      margin-right: 0;
+    }
+  }
