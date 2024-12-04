@@ -1,4 +1,4 @@
-# navio_naranja
+# Algorim
 
 ### Instalar todas las dependencias listadas en requirements.txt
 
